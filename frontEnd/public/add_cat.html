@@ -1,0 +1,196 @@
+<!-- // Class: 1B05
+    // Admission Number: p2021391
+    // Name: Lim Chong Shan -->
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ADES CA2 Add Category</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script>
+        // const baseUrl = "http://localhost:3000";
+        // const token = localStorage.getItem("token");
+        // const loggedInUserID = parseInt(localStorage.getItem("loggedInUserID"));
+
+        // if (token === null || isNaN(loggedInUserID)) {
+        //     console.log("Redirecting to login...");
+        //     window.location.href = "/login/";
+        // }
+        // else {
+        //     // put your original code in the script tag here
+        // }
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav">
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/add-game">Add Game (Admin ONLY)</a>
+            <a class="nav-link" href="/add-cat">Add Category (Admin ONLY)</a>
+            <p><input style="margin-top: 0.5em;" type="button" id="Logout" value="Log Out" /></p>
+        </nav>
+
+        <div class="row" style="margin-top: 2rem;">
+
+            <div class="col-md-12 col-xs-12">
+                <h1>Add Category</h1>
+
+                <div id="messages" class="alert alert-info">
+                </div>
+
+                <form id="submit" class="column" style="margin-top: 2rem;">
+                    <div class="form-group col-md-6 col-xs-6 float-left">
+                        <input for="catname" type="text" class="form-control" id="catname" rows="1"
+                            placeholder="Category name"></input>
+                    </div>
+                    <div class="form-group col-md-6 col-xs-6 float-left">
+                        <input for="desc" type="text" class="form-control" id="desc" rows="1"
+                            placeholder="Description"></input>
+                    </div>
+                    <!-- <div class="form-group col-md-3 col-xs-3 float-left">
+                        <label for="platform">Choose a platform:</label>
+                        <select id="platform" name="platform" style="margin-left: 1rem;">
+                            <option value="">-</option>
+                            <option value="PC">PC</option>
+                            <option value="PS4">PS4</option>
+                            <option value="Nintendo">Nintendo</option>
+                            <option value="Mobile">Mobile</option>
+                        </select>
+                     </div> -->
+                    <div class="col-md-12 col-xs-12 float-left">
+                        <button type="submit" class="btn btn-primary btn-success col-md-12 col-xs-12 float-left w-100">Add
+                            Category</button>
+                    </div>
+                </form>
+                <div id="posts">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+    <script>
+        // --------------------------------------------------------
+        // Need to (i) connect to endpoints or (ii) redirect to URLs?
+        // If yes to any, then include this
+        // --------------------------------------------------------
+        const baseUrl = "http://localhost:3000";
+
+        // --------------------------------------------------------
+        // Need to know who the current login user is?
+        // If yes, then include this
+        // --------------------------------------------------------
+        const loggedInUserID = parseInt(localStorage.getItem("loggedInUserID"));
+
+        // --------------------------------------------------------
+        // Need the token for authentication?
+        // If yes, then include this
+        // --------------------------------------------------------
+        const token = localStorage.getItem("token");
+
+        // --------------------------------------------------------
+        // Redirect if the user has not logged in
+        // --------------------------------------------------------
+        if (token === null || isNaN(loggedInUserID)) {
+            console.log("Redirecting to login...");
+            window.location.href = "/login/";
+        }
+
+        // --------------------------------------------------------
+        // Endpoints / event handlers
+        // --------------------------------------------------------
+        var requestConfig = {
+            headers: { "Authorization": "Bearer " + token }
+        };
+
+        console.log("----- Request config -----");
+        console.log(requestConfig);
+
+        $("#submit").submit((event) => {
+            // console.log("hi");
+            // prevents the page from refreshing
+            event.preventDefault();
+
+            // data extraction + compilation
+            const requestBody = {
+                catname: $("#catname").val(),
+                description: $("#desc").val(),
+            };
+
+            console.log("----- compiled data -----");
+            console.log(requestBody);
+
+
+
+            axios.post(`${baseUrl}/cat-add/`, requestBody, requestConfig)
+                .then((response) => {
+                    // console.log("hi");
+                    // reset form value.
+                    // $("#search").val("");
+
+                    const games = response.data;
+                    console.log(games);
+                    console.log(requestBody);
+                    console.log(requestBody.catname);
+                    console.log(requestBody.description);
+                    if (requestBody.catname == "" || requestBody.description == "") {
+                        $('#messages').html("Please ensure all fields are filled");
+                        console.log("HEYHEYHEYHEYHEYHEYHEYHEYHEY")
+                        console.log(requestBody.catname)
+                    }
+
+                    // games.forEach((post) => {
+                    const gameHtml = `
+                            <div class="card border border-danger float-left" style="margin-top: 2rem w-100">
+                                <div class="card-body">
+                                    <p class="card-header">${requestBody.catname}</p>
+                                </div>
+                                <div class="card-text text-muted text-center">
+                                    ${requestBody.description}
+                                </div>
+                            </div>
+                        `;
+                    $("#posts").prepend(gameHtml);
+                    ;
+                    // })
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if (error.status == 401) {
+                        $('#messages').html("Hey! What do you think you are doing?");
+                        // $('#messages').html(error);
+                    }
+                    else {
+                        $('#messages').html("Something went wrong, please try again?");
+                        // $('#messages').html(error);
+                    }
+                });
+        });
+
+        $("#Logout").click(function () {
+            window.localStorage.clear();
+            window.location.assign("http://localhost:3001/login");
+        });
+    </script>
+</body>
+
+</html>
