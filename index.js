@@ -16,25 +16,25 @@ const app = express();
 // endpoints
 //------------------------------------------
 app.get("/", (req, res) => {
-    res.sendFile("/public/index.html", { root: __dirname });
+    res.sendFile("/index.html", { root: __dirname });
 });
 
 app.get("/login/", (req, res) => {
-    res.sendFile("/public/login.html", { root: __dirname });
+    res.sendFile("/login.html", { root: __dirname });
 });
 
 app.get("/add-game/", (req, res) => {
-    res.sendFile("/public/add_game.html", { root: __dirname });
+    res.sendFile("/add_game.html", { root: __dirname });
 });
 
 app.get("/add-cat/", (req, res) => {
-    res.sendFile("/public/add_cat.html", { root: __dirname });
+    res.sendFile("/add_cat.html", { root: __dirname });
 });
 
 //------------------------------------------
 // configurations
 //------------------------------------------
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 //------------------------------------------
 // main
