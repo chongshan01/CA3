@@ -38,7 +38,8 @@
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        const baseUrl = "http://localhost:3000";
+        const port = process.env.PORT || 3000;
+        const baseUrl = "http://localhost:" + port;
         $("#login-form").submit((event) => {
             // prevent page reload
             event.preventDefault();
